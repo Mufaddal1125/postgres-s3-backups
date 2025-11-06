@@ -1,6 +1,6 @@
 ARG NODE_VERSION='20.11.1'
 
-FROM node:${NODE_VERSION}-alpine AS build
+FROM node:${NODE_VERSION}-bookworm-slim AS build
 
 ENV NPM_CONFIG_UPDATE_NOTIFIER=false
 ENV NPM_CONFIG_FUND=false
@@ -14,7 +14,7 @@ RUN npm ci && \
     npm run build && \
     npm prune --production
 
-FROM node:${NODE_VERSION}-alpine
+FROM node:${NODE_VERSION}-bookworm-slim
 
 WORKDIR /app
 
@@ -24,7 +24,7 @@ COPY --from=build /app/package.json ./
 
 ARG PG_VERSION='16'
 
-RUN apk add --update --no-cache postgresql${PG_VERSION}-client
+RUN apk add --update --no-cache postgresql-client-${PG_VERSION}
 
 CMD pg_isready --dbname=$BACKUP_DATABASE_URL && \
     pg_dump --version && \
