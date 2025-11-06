@@ -26,7 +26,7 @@ ARG PG_VERSION='16'
 
 RUN apt update -y
 
-RUN apt install --no-cache postgresql-client-${PG_VERSION}
+RUN apt install postgresql-client-${PG_VERSION}
 
 CMD pg_isready --dbname=$BACKUP_DATABASE_URL && \
     pg_dump --version && \
