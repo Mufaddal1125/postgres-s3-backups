@@ -24,7 +24,9 @@ COPY --from=build /app/package.json ./
 
 ARG PG_VERSION='16'
 
-RUN apk add --update --no-cache postgresql-client-${PG_VERSION}
+RUN apt update -y
+
+RUN apt install --no-cache postgresql-client-${PG_VERSION}
 
 CMD pg_isready --dbname=$BACKUP_DATABASE_URL && \
     pg_dump --version && \
